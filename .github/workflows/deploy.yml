@@ -1,0 +1,37 @@
+name: .NET
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore .
+    - name: Build
+      run: dotnet build --no-restore .
+    - name: Test
+      run: dotnet test --no-build --verbosity normal .
+    - name: Generate package
+      run: dotnet publish ./Codurance.FunctionAPI/Codurance.FunctionAPI.csproj -o ./publish --configuration Release
+
+    - name: Deploy to Azure Function App
+      if: github.ref == 'refs/heads/main'
+      id: fa
+      uses: Azure/functions-action@v1.4.4
+      with:
+        app-name: 'team-api-academy'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.PublishProfile }}
+        package: ./publish/
