@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunctionsApi.Test", "FunctionsApi.Test\FunctionsApi.Test.csproj", "{5EDF2EFE-8F1D-471B-880E-12F0985B46B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codurance.FunctionAPI", "Codurance.FunctionAPI\Codurance.FunctionAPI.csproj", "{98004CAB-6C0E-4F47-8BDA-EAB30F82C526}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5EDF2EFE-8F1D-471B-880E-12F0985B46B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EDF2EFE-8F1D-471B-880E-12F0985B46B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EDF2EFE-8F1D-471B-880E-12F0985B46B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EDF2EFE-8F1D-471B-880E-12F0985B46B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98004CAB-6C0E-4F47-8BDA-EAB30F82C526}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98004CAB-6C0E-4F47-8BDA-EAB30F82C526}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98004CAB-6C0E-4F47-8BDA-EAB30F82C526}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98004CAB-6C0E-4F47-8BDA-EAB30F82C526}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
