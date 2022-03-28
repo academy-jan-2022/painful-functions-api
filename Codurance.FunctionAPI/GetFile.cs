@@ -9,23 +9,26 @@ using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 namespace Codurance.FunctionAPI
 {
-    
     public static class GetFile
     {
         [FunctionName("GetFile")]
-        public static async Task<IActionResult> Run2(
+        public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetFile/{id:Guid}")] HttpRequest req,
             Guid id,
             ILogger log){
             string connectionString = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
 
-            BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
-            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("files");
+            BlobDownloadResult download = await new BlobServiceClient(connectionString)
+            .GetBlobContainerClient("files")
+            .GetBlobClient($"{id}.txt")
+            .DownloadContentAsync();
 
-            string fileName = $"{id}" + ".txt";
-            BlobClient blobClient = containerClient.GetBlobClient(fileName);
 
-            BlobDownloadResult download = await blobClient.DownloadContentAsync();
+            int number = Int32.Parse(download.Content.ToString());
+
+            var type = number % 2 == 0 ? "even" : "odd";
+
+            log.LogInformation($"File with id: {id} contains an {type} number");
 
             return new OkObjectResult(download.Content.ToString());
         }
