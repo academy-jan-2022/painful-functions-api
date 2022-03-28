@@ -28,8 +28,12 @@ namespace Codurance.FunctionAPI
             NumberRequest data = JsonConvert.DeserializeObject<NumberRequest>(requestBody); 
             
             Guid guid = Guid.NewGuid();
-            log.LogInformation("GUID generated");
-            log.LogInformation(data.number.ToString());
+
+            if (data.number % 4 == 0)
+            {
+                log.LogInformation($"The number {data.number} is divisible by 4. Woo!");
+            }
+            
             NumberMessage message = new NumberMessage(data.number, guid);
            
             msg.Add(JsonConvert.SerializeObject(message));
