@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.ApplicationInsights;
@@ -42,8 +43,14 @@ public static class GenerateGUID
 
         var guid = Guid.NewGuid();
 
+
         if (data.number % 4 == 0)
-            log.LogInformation(DivisibleByFourTemplate, data.number);
+        {
+            TelemetryClient.TrackTrace(
+                string.Format(DivisibleByFourTemplate, data.number),
+                new Dictionary<string, string> { { "divisibleBy", "4" } }
+            );
+        }
 
         var message = new NumberMessage(data.number, guid);
 
