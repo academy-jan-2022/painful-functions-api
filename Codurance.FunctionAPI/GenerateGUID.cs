@@ -36,7 +36,14 @@ public static class GenerateGUID
         ICollector<string> msg,
         ILogger log)
     {
-        log.LogInformation("C# HTTP trigger function processed a request");
+        var correlationID = Guid.NewGuid();
+        TelemetryClient.TrackTrace(
+            "C# HTTP trigger function processed a request",
+            new Dictionary<string, string>
+            {
+                { "correlationID", correlationID.ToString() }
+            }
+        );
 
         var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
         var data = JsonConvert.DeserializeObject<NumberRequest>(requestBody);
@@ -48,11 +55,15 @@ public static class GenerateGUID
         {
             TelemetryClient.TrackTrace(
                 string.Format(DivisibleByFourTemplate, data.number),
-                new Dictionary<string, string> { { "divisibleBy", "4" } }
+                new Dictionary<string, string>
+                {
+                    { "divisibleBy", "4" },
+                    { "correlationID", correlationID.ToString() }
+                }
             );
         }
 
-        var message = new NumberMessage(data.number, guid);
+        var message = new NumberMessage(data.number, guid, correlationID);
 
         msg.Add(JsonConvert.SerializeObject(message));
 
