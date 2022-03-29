@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -13,6 +15,17 @@ namespace Codurance.FunctionAPI;
 public static class GenerateGUID
 {
     private const string DivisibleByFourTemplate = "The number {0} is divisible by 4. Woo!";
+
+    private static readonly Lazy<TelemetryClient> TelemetryClientLazy =
+        new(() =>
+        {
+            var config = TelemetryConfiguration.CreateDefault();
+            config.InstrumentationKey =
+                Environment.GetEnvironmentVariable("APPINSIGHTS_INSTRUMENTATIONKEY");
+            return new TelemetryClient(config);
+        });
+
+    private static TelemetryClient TelemetryClient => TelemetryClientLazy.Value;
 
     [FunctionName("GenerateGUID")]
     public static async Task<IActionResult> Run(
